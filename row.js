@@ -1,9 +1,22 @@
 import React, {Component} from "react";
 import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
+import Swipeout from 'react-native-swipe-out';
 
 class Row extends Component {
     constructor(props) {
         super(props);
+
+        this.swipeoutBtns = [
+            {
+                text: 'Delete',
+                backgroundColor: 'red',
+                onPress: this.removePressed.bind(this)
+            }
+        ];
+     }
+
+    removePressed() {
+        this.props.onDelete(this.props.id);
     }
 
     render() {
@@ -15,13 +28,15 @@ class Row extends Component {
         }
 
         return (
-            <View style={styles.row}>
-                <TouchableOpacity onPress={() => this.props.onMarkCompleted(this.props.id)}>
-                    <Text style={touchableStyle}>{String.fromCharCode(10003)}</Text>
-                </TouchableOpacity>
+            <Swipeout right={this.swipeoutBtns} backgroundColor="white">
+                <View style={styles.row}>
+                    <TouchableOpacity onPress={() => this.props.onMarkCompleted(this.props.id)}>
+                        <Text style={touchableStyle}>{String.fromCharCode(10003)}</Text>
+                    </TouchableOpacity>
 
-                <Text style={labelStyle}>{this.props.text}</Text>
-            </View>
+                    <Text style={labelStyle}>{this.props.text}</Text>
+                </View>
+            </Swipeout>
         );
     }
 

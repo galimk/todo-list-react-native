@@ -27,6 +27,7 @@ class App extends Component {
         this.handleToggleAllComplete = this.handleToggleAllComplete.bind(this);
         this.setSource = this.setSource.bind(this);
         this.markCompleted = this.markCompleted.bind(this);
+        this.deleteItem = this.deleteItem.bind(this);
     }
 
     componentDidMount() {
@@ -42,12 +43,12 @@ class App extends Component {
         if (!this.state.value) return;
 
         const newItems = [
-            ...this.state.items,
             {
                 id: Date.now(),
                 text: this.state.value,
                 complete: false
-            }
+            },
+            ...this.state.items
         ];
 
         this.setSource(newItems, newItems, {value: ""});
@@ -58,7 +59,6 @@ class App extends Component {
         const newItems = this.state.items.map((item) => ({
             ... item, complete
         }));
-
         this.setSource(newItems, newItems, {allComplete: complete});
     }
 
@@ -73,15 +73,20 @@ class App extends Component {
     }
 
     markCompleted(id) {
+        console.log(`marking ${id}`);
         let newItems = [...this.state.items];
         let item = newItems.find(e => e.id == id);
         item.complete = !item.complete;
-        console.log(`${item.id}:${item.complete}`)
+        this.setSource(newItems, newItems);
+    }
+
+    deleteItem(id) {
+        console.log(`deleting ${id}`);
+        let newItems = this.state.items.filter(e => e.id != id);
         this.setSource(newItems, newItems);
     }
 
     render() {
-        console.log('rendering....');
         return (
             <View style={styles.container}>
                 <Header
@@ -102,6 +107,7 @@ class App extends Component {
                                 <Row
                                     key={key}
                                     {... value}
+                                    onDelete={this.deleteItem}
                                     onMarkCompleted={this.markCompleted}
                                 />
                             )
