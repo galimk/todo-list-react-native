@@ -28,7 +28,7 @@ class Row extends Component {
         }
 
         return (
-            <Swipeout right={this.swipeoutBtns} backgroundColor="white">
+            <Swipeout right={this.swipeoutBtns} backgroundColor="white" autoClose={true}>
                 <View style={styles.row}>
                     <TouchableOpacity onPress={() => this.props.onMarkCompleted(this.props.id)}>
                         <Text style={touchableStyle}>{String.fromCharCode(10003)}</Text>
